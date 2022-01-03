@@ -1,0 +1,85 @@
+### CREATE ACTIVITY
+POST http://localhost:8081/activities
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "sammi@gmail.com",
+  "title": "belajar",
+  "description": "belajar .... ",
+  "day": "MONDAY"
+}
+
+### GET ACTIVITY BY ID
+GET http://localhost:8081/activities/7b5012e5-b28d-4875-9378-0b187b2c567f
+Accept: application/json
+
+### SEARCH ACTIVITY BY FILTER
+GET http://localhost:8081/activities/search?day=SUNDAY
+Accept: application/json
+
+### LIST ACTIVITY
+GET http://localhost:8081/activities
+Accept: application/json
+
+### UPDATE ACTIVITY
+PUT http://localhost:8081/activities/7b5012e5-b28d-4875-9378-0b187b2c567f
+Accept: application/json
+
+{
+  "email": "sammiupdated@gmail.com",
+  "title": "belajarupdated",
+  "description": "belajar updated.... ",
+  "day": "TUESDAY"
+}
+
+### DELETE ACTIVITY
+DELETE http://localhost:8081/activities/7b5012e5-b28d-4875-9378-0b187b2c567f
+
+### CREATE TODO
+POST http://localhost:8081/todos
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "string 2",
+  "activity_id": "637741ad-a205-453c-b590-2a2004265b44",
+  "description": "string",
+  "priority": "LOW",
+  "status": "IN_PROGRESS"
+}
+
+### GET LIST TODO
+GET http://localhost:8081/todos	
+Accept: application/json
+
+### GET TODO BY ID
+GET http://localhost:8081/todos/795068c0-9b04-4fc5-b302-1a6f08deefe1
+Accept: application/json
+
+### LIST TODO BY ACTIVITY ID
+GET http://localhost:8081/todos/activities/id/f85b8d7e-a0aa-4f2c-9121-905a40e518a2
+Accept: application/json
+
+### LIST TODO BY ACTIVITY DATE
+GET http://localhost:8081/todos/activities/date/01-03-2022
+Accept: application/json
+
+### UPDATE TODO BY ID
+PUT http://localhost:8081/todos/8b749a90-1b97-455c-9992-fb33a24674e7
+Accept: application/json
+
+{
+  "title": "todo updated",
+  "activity_id": "f85b8d7e-a0aa-4f2c-9121-905a40e518a2",
+  "description": "string updated",
+  "priority": "LOW",
+  "status": "IN_PROGRESS"
+}
+
+### DELETE TODO BY ID
+DELETE http://localhost:8081/todos/50a13767-acda-4e75-bfae-46c4598405c4
+Accept: application/json
+
+### SEARCH TODO WITH FILTER
+GET http://localhost:8081/todos/search?priority=HIGH&status=DONE

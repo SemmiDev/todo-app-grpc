@@ -1,0 +1,188 @@
+syntax = "proto3";
+
+package model;
+
+option go_package = "/model";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+// activity is a model.
+enum Day {
+    MONDAY = 0;
+    TUESDAY = 1;
+    WEDNESDAY = 2;
+    THURSDAY = 3;
+    FRIDAY = 4;
+    SATURDAY = 5;
+    SUNDAY = 6;
+}
+message Activity {
+    string id = 1;
+    string email = 2;
+    string title = 3;
+    string description = 4;
+    Day day = 5;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+message CreateActivityRequest {
+    string email = 1;
+    string title = 2;
+    string description = 3;
+    Day day = 4;
+}
+message CreateActivityResponse { Activity activity = 1; }
+message GetActivityRequest { string id = 1; }
+message GetActivityResponse { Activity activity = 1; }
+message ListActivityResponse { repeated Activity activities = 1; }
+message GetActivityIdByDateRequest { string date = 1; }
+message GetActivityIdByDateResponse { repeated string id = 1; }
+message SearchActivityFilter { Day day = 1; }
+message SearchActivityResponse { Activity activity = 1; }
+message UpdateActivityRequest {
+    string id = 1;
+    string email = 2;
+    string title = 3;
+    string description = 4;
+    Day day = 5;
+}
+message UpdateActivityResponse { Activity activity = 1; }
+message DeleteActivityRequest { string id = 1; }
+
+service ActivityService {
+    rpc CreateActivity(CreateActivityRequest) returns (CreateActivityResponse) {
+        option (google.api.http) = {
+            post: "/activities"
+            body: "*"
+        };
+    }
+    rpc GetActivity(GetActivityRequest) returns (GetActivityResponse) {
+        option (google.api.http) = {
+            get: "/activities/{id}"
+        };
+    }
+    rpc ListActivity(EmptyRequest) returns (ListActivityResponse) {
+        option (google.api.http) = {
+            get: "/activities"
+        };  
+    }
+    rpc SearchActivity(SearchActivityFilter) returns (stream SearchActivityResponse) {
+        option (google.api.http) = {
+            get: "/activities/search"
+        };
+    }
+    rpc UpdateActivity(UpdateActivityRequest) returns (UpdateActivityResponse) {
+        option (google.api.http) = {
+            put: "/activities/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteActivity(DeleteActivityRequest) returns (EmptyResponse) {
+        option (google.api.http) = {
+            delete: "/activities/{id}"
+        };
+    }
+}
+
+// todo is a model.
+enum Status {
+    IN_PROGRESS = 0;
+    DONE = 1;
+}
+enum Priority {
+    LOW = 0;
+    MEDIUM = 1;
+    HIGH = 2;
+}
+message Todo {
+    string id = 1;
+    string activity_id = 2;
+    string title = 3;
+    string description = 4;
+    Priority priority = 5; 
+    Status status = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+message CreateTodoRequest{
+    string title = 1;
+    string activity_id = 2;
+    string description = 3;
+    Priority priority = 4; 
+    Status status = 5;
+}
+message CreateTodoResponse { Todo todo = 1; } 
+message GetTodoRequest { string id = 1; }
+message GetTodoResponse { Todo todo = 1; }
+message ListTodoResponse { repeated Todo list = 1; }
+message SearchTodoFilter {
+    Priority priority = 1; 
+    Status status = 2;
+}
+message ListTodoByActivityIdRequest { string id = 1; }
+message ListTodoByActivityIdResponse { repeated Todo todos = 1; }
+message ListTodoByActivityDateRequest { string date = 1;}
+message ListTodoByActivityDateResponse { repeated Todo todos = 1; }
+message SearchTodoResponse { Todo todo = 1; }
+message DeleteTodoRequest { string id = 1; }
+message UpdateTodoRequest { 
+    string id = 1;
+    string activity_id = 2;
+    string title = 3;
+    string description = 4;
+    Priority priority = 5; 
+    Status status = 6;
+}
+message UpdateTodoResponse { Todo todo = 1; }
+service TodoService {
+    rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse) {
+        option (google.api.http) = {
+            post: "/todos"
+            body: "*"
+        };
+    }
+    rpc GetTodo(GetTodoRequest) returns (GetTodoResponse) {
+        option (google.api.http) = {
+            get: "/todos/{id}"
+        };
+    }
+    rpc ListTodo(EmptyRequest) returns (ListTodoResponse) {
+        option (google.api.http) = {
+            get: "/todos"
+        };
+    }
+    rpc ListTodoByActivityId(ListTodoByActivityIdRequest) returns (ListTodoByActivityIdResponse) {
+        option (google.api.http) = {
+            get: "/todos/activities/id/{id}"
+        };
+    }
+    rpc ListTodoByActivityDate(ListTodoByActivityDateRequest) returns (ListTodoByActivityDateResponse) {
+        option (google.api.http) = {
+            get: "/todos/activities/date/{date}"
+        };
+    }
+    rpc SearchTodo(SearchTodoFilter) returns (stream SearchTodoResponse) {
+        option (google.api.http) = {
+            get: "/todos/search"
+        };
+    }
+    rpc UpdateTodo(UpdateTodoRequest) returns (UpdateTodoResponse) {
+        option (google.api.http) = {
+            put: "/todos/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteTodo(DeleteTodoRequest) returns (EmptyResponse) {
+        option (google.api.http) = {
+            delete: "/todos/{id}"
+        };
+    }
+}
+
+message EmptyResponse {
+    bool success = 1;
+}
+
+message EmptyRequest {}
