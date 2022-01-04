@@ -11,11 +11,12 @@ import (
 )
 
 type Handler struct {
-	logger        *zerolog.Logger
-	todoStore     todo.TodoStore
-	activityStore activity.ActivityStore
 	model.UnimplementedTodoServiceServer
 	model.UnimplementedActivityServiceServer
+	logger *zerolog.Logger
+
+	activityStore activity.ActivityStore
+	todoStore     todo.TodoStore
 }
 
 func New(l *zerolog.Logger, ts todo.TodoStore, as activity.ActivityStore) *Handler {

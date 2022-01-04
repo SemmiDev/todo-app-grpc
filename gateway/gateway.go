@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"flag"
-	"github.com/SemmiDev/todo-app/common/config"
 	"log"
 	"net/http"
 	"strconv"
+
+	"github.com/SemmiDev/todo-app/common/config"
 
 	"github.com/SemmiDev/todo-app/model"
 	"github.com/golang/glog"
@@ -50,18 +51,24 @@ func run() error {
 	opts := []grpc.DialOption{
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
-	err := model.RegisterTodoServiceHandlerFromEndpoint(ctx, mux, config.SERVER_PORT, opts)
+
+	err := model.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
 	if err != nil {
 		return err
 	}
 
-	err = model.RegisterActivityServiceHandlerFromEndpoint(ctx, mux, config.SERVER_PORT, opts)
+	err = model.RegisterTodoServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
+	if err != nil {
+		return err
+	}
+
+	err = model.RegisterActivityServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
 	if err != nil {
 		return err
 	}
 
 	log.Println("starting gateway server on port 8081")
-	return http.ListenAndServe(config.GATEWAY_PORT, mux)
+	return http.ListenAndServe(config.GatewayPort, mux)
 }
 
 func main() {

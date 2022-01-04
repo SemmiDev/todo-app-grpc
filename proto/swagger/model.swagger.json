@@ -6,6 +6,9 @@
   },
   "tags": [
     {
+      "name": "AuthService"
+    },
+    {
       "name": "ActivityService"
     },
     {
@@ -225,6 +228,38 @@
         ],
         "tags": [
           "ActivityService"
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "AuthService_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/modelLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/modelLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AuthService"
         ]
       }
     },
@@ -687,6 +722,26 @@
           "items": {
             "$ref": "#/definitions/modelTodo"
           }
+        }
+      }
+    },
+    "modelLoginRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "description": "auth."
+    },
+    "modelLoginResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
         }
       }
     },

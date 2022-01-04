@@ -8,6 +8,23 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
+// auth. 
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginResponse { string access_token = 1; }
+
+service AuthService {
+    rpc Login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/auth/login"
+            body: "*"
+        };
+    };
+}
+
 // activity is a model.
 enum Day {
     MONDAY = 0;

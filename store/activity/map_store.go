@@ -51,7 +51,6 @@ func (s *MapStore) GetIdByDate(date string) ([]string, error) {
 	}
 	var ids []string
 	for i, v := range s.activities {
-		// MM-DD-YYYY
 		format := v.GetCreatedAt().AsTime().Format("01-02-2006")
 		if format == date {
 			ids = append(ids, i)
@@ -94,7 +93,11 @@ func (s *MapStore) Update(todo *model.Activity) error {
 	return nil
 }
 
-func (s *MapStore) Search(c context.Context, filter *model.SearchActivityFilter, found func(todo *model.Activity) error) error {
+func (s *MapStore) Search(
+	c context.Context,
+	filter *model.SearchActivityFilter,
+	found func(todo *model.Activity) error,
+) error {
 	s.m.RLock()
 	defer s.m.RUnlock()
 

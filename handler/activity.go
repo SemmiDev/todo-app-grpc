@@ -2,8 +2,9 @@ package handler
 
 import (
 	"context"
-	"github.com/SemmiDev/todo-app/common/context"
 	"log"
+
+	ctx "github.com/SemmiDev/todo-app/common/context"
 
 	"github.com/SemmiDev/todo-app/model"
 	"github.com/google/uuid"
@@ -81,15 +82,15 @@ func (h *Handler) SearchActivity(filter *model.SearchActivityFilter, stream mode
 	err := h.activityStore.Search(
 		stream.Context(),
 		filter,
-		func(Activity *model.Activity) error {
+		func(activity *model.Activity) error {
 			res := &model.SearchActivityResponse{
-				Activity: Activity,
+				Activity: activity,
 			}
 			err := stream.Send(res)
 			if err != nil {
 				return err
 			}
-			log.Printf("sent activity with id: %s", Activity.GetId())
+			log.Printf("sent activity with id: %s", activity.GetId())
 			return nil
 		},
 	)
