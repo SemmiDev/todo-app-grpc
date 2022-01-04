@@ -2,26 +2,25 @@ package main
 
 import (
 	"fmt"
+	"github.com/SemmiDev/todo-app/proto"
+	"google.golang.org/grpc/reflection"
 	"net"
 	"os"
 
 	"github.com/SemmiDev/todo-app/common/config"
 	"github.com/SemmiDev/todo-app/common/token"
 
-	"github.com/SemmiDev/todo-app/handler"
-	"github.com/SemmiDev/todo-app/model"
+	"github.com/SemmiDev/todo-app/service"
 	activityStore "github.com/SemmiDev/todo-app/store/activity"
 	todoStore "github.com/SemmiDev/todo-app/store/todo"
 	userStore "github.com/SemmiDev/todo-app/store/user"
-	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	"github.com/rs/zerolog"
 	"google.golang.org/grpc"
 )
 
 func accessibleRoles() map[string][]string {
-	const activityServicePath = "/model.ActivityService/"
-	const todoServicePath = "/model.TodoService/"
+	const activityServicePath = "/proto.ActivityService/"
+	const todoServicePath = "/proto.TodoService/"
 
 	return map[string][]string{
 		activityServicePath + "CreateActivity": {"admin", "user"},
@@ -46,36 +45,34 @@ func main() {
 	w := zerolog.ConsoleWriter{Out: os.Stderr}
 	l := zerolog.New(w).With().Timestamp().Caller().Logger()
 
+	jwtManager := token.NewJWTManager(config.SecretKey, config.TokenDuration)
+	interceptor := service.NewAuthInterceptor(jwtManager, accessibleRoles())
+	serverOpts := []grpc.ServerOption{
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
+	}
+
 	userStore := userStore.NewMapStore()
 	todoStore := todoStore.NewMapStore()
 	activityStore := activityStore.NewMapStore()
 
-	handlers := handler.New(&l, todoStore, activityStore)
+	authServer := service.NewAuthServer(userStore, jwtManager)
+	todoServer := service.NewTodoServer(todoStore, activityStore, &l)
+	activityServer := service.NewActivityServer(activityStore, &l)
 
-	listener, err := net.Listen("tcp", config.ServerPort)
+	grpcServer := grpc.NewServer(serverOpts...)
+
+	listener, err := net.Listen("tcp", config.GRPCServerPort)
 	if err != nil {
 		l.Panic().Err(fmt.Errorf("failed to listen: %w", err))
 	}
 
-	jwtManager := token.NewJWTManager(config.SecretKey, config.TokenDuration)
-	authServer := handler.NewAuthServer(userStore, jwtManager)
-	interceptor := handler.NewAuthInterceptor(jwtManager, accessibleRoles())
+	proto.RegisterAuthServiceServer(grpcServer, authServer)
+	proto.RegisterTodoServiceServer(grpcServer, todoServer)
+	proto.RegisterActivityServiceServer(grpcServer, activityServer)
+	reflection.Register(grpcServer)
 
-	serverOpts := []grpc.ServerOption{
-		grpc.UnaryInterceptor(interceptor.Unary()),
-		grpc.StreamInterceptor(interceptor.Stream()),
-		grpc_middleware.WithUnaryServerChain(
-			grpc_recovery.UnaryServerInterceptor(),
-		),
-	}
-
-	grpcServer := grpc.NewServer(serverOpts...)
-
-	model.RegisterAuthServiceServer(grpcServer, authServer)
-	model.RegisterTodoServiceServer(grpcServer, handlers)
-	model.RegisterActivityServiceServer(grpcServer, handlers)
-
-	l.Info().Str("port", config.ServerPort).Msg("Start GRPC Server")
+	l.Info().Str("ADDR", config.GRPCServerPort).Msg("Start GRPC Server")
 	if err := grpcServer.Serve(listener); err != nil {
 		l.Panic().Err(fmt.Errorf("failed to serve: %w", err))
 	}

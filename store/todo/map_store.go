@@ -2,25 +2,24 @@ package todo
 
 import (
 	"context"
+	"github.com/SemmiDev/todo-app/proto"
 	"log"
 	"sync"
-
-	"github.com/SemmiDev/todo-app/model"
 )
 
 type MapStore struct {
 	m     sync.RWMutex
-	todos map[string]*model.Todo
+	todos map[string]*proto.Todo
 }
 
 func NewMapStore() *MapStore {
 	return &MapStore{
 		m:     sync.RWMutex{},
-		todos: make(map[string]*model.Todo),
+		todos: make(map[string]*proto.Todo),
 	}
 }
 
-func (s *MapStore) Save(todo *model.Todo) error {
+func (s *MapStore) Save(todo *proto.Todo) error {
 	s.m.Lock()
 	defer s.m.Unlock()
 
@@ -31,7 +30,7 @@ func (s *MapStore) Save(todo *model.Todo) error {
 	return ErrTodoAlreadyExists
 }
 
-func (s *MapStore) Get(id string) (*model.Todo, error) {
+func (s *MapStore) Get(id string) (*proto.Todo, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -42,7 +41,7 @@ func (s *MapStore) Get(id string) (*model.Todo, error) {
 	return Copy(todo), nil
 }
 
-func (s *MapStore) List() ([]*model.Todo, error) {
+func (s *MapStore) List() ([]*proto.Todo, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -52,7 +51,7 @@ func (s *MapStore) List() ([]*model.Todo, error) {
 	return CopyAll(s.todos), nil
 }
 
-func (s *MapStore) ListByActivityId(id string) ([]*model.Todo, error) {
+func (s *MapStore) ListByActivityId(id string) ([]*proto.Todo, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -60,7 +59,7 @@ func (s *MapStore) ListByActivityId(id string) ([]*model.Todo, error) {
 		return nil, ErrTodosIsEmpty
 	}
 
-	var todos []*model.Todo
+	var todos []*proto.Todo
 	for _, v := range s.todos {
 		if v.GetActivityId() == id {
 			todos = append(todos, v)
@@ -69,7 +68,7 @@ func (s *MapStore) ListByActivityId(id string) ([]*model.Todo, error) {
 	return todos, nil
 }
 
-func (s *MapStore) ListByActivityIds(ids []string) ([]*model.Todo, error) {
+func (s *MapStore) ListByActivityIds(ids []string) ([]*proto.Todo, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -77,7 +76,7 @@ func (s *MapStore) ListByActivityIds(ids []string) ([]*model.Todo, error) {
 		return nil, ErrTodosIsEmpty
 	}
 
-	var todos []*model.Todo
+	var todos []*proto.Todo
 	for _, id := range ids {
 		for _, v := range s.todos {
 			if v.GetActivityId() == id {
@@ -90,8 +89,8 @@ func (s *MapStore) ListByActivityIds(ids []string) ([]*model.Todo, error) {
 
 func (s *MapStore) Search(
 	c context.Context,
-	filter *model.SearchTodoFilter,
-	found func(todo *model.Todo) error,
+	filter *proto.SearchTodoFilter,
+	found func(todo *proto.Todo) error,
 ) error {
 	s.m.RLock()
 	defer s.m.RUnlock()
@@ -112,7 +111,7 @@ func (s *MapStore) Search(
 	return nil
 }
 
-func isQualified(filter *model.SearchTodoFilter, todo *model.Todo) bool {
+func isQualified(filter *proto.SearchTodoFilter, todo *proto.Todo) bool {
 	if todo.GetPriority() != filter.GetPriority() {
 		return false
 	}
@@ -133,7 +132,7 @@ func (s *MapStore) Delete(id string) error {
 	return nil
 }
 
-func (s *MapStore) Update(todo *model.Todo) error {
+func (s *MapStore) Update(todo *proto.Todo) error {
 	s.m.Lock()
 	defer s.m.Unlock()
 

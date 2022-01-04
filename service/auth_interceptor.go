@@ -1,4 +1,4 @@
-package handler
+package service
 
 import (
 	"context"
@@ -17,7 +17,10 @@ type AuthInterceptor struct {
 }
 
 func NewAuthInterceptor(jwtManager *token.JWTManager, accessibleRoles map[string][]string) *AuthInterceptor {
-	return &AuthInterceptor{jwtManager, accessibleRoles}
+	return &AuthInterceptor{
+		jwtManager:      jwtManager,
+		accessibleRoles: accessibleRoles,
+	}
 }
 
 func (interceptor *AuthInterceptor) Unary() grpc.UnaryServerInterceptor {

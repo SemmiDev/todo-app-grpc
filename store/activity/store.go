@@ -3,8 +3,7 @@ package activity
 import (
 	"context"
 	"errors"
-
-	"github.com/SemmiDev/todo-app/model"
+	"github.com/SemmiDev/todo-app/proto"
 )
 
 var (
@@ -14,17 +13,17 @@ var (
 )
 
 type ActivityStore interface {
-	Save(activity *model.Activity) error
-	Get(id string) (*model.Activity, error)
+	Save(activity *proto.Activity) error
+	Get(id string) (*proto.Activity, error)
 	GetIdByDate(date string) ([]string, error)
-	List() ([]*model.Activity, error)
+	List() ([]*proto.Activity, error)
 	Delete(id string) error
-	Update(activity *model.Activity) error
-	Search(c context.Context, filter *model.SearchActivityFilter, found func(activity *model.Activity) error) error
+	Update(activity *proto.Activity) error
+	Search(c context.Context, filter *proto.SearchActivityFilter, found func(activity *proto.Activity) error) error
 }
 
-func Copy(activity *model.Activity) *model.Activity {
-	return &model.Activity{
+func Copy(activity *proto.Activity) *proto.Activity {
+	return &proto.Activity{
 		Id:          activity.Id,
 		Email:       activity.Email,
 		Title:       activity.Title,
@@ -35,7 +34,7 @@ func Copy(activity *model.Activity) *model.Activity {
 	}
 }
 
-func CopyAll(activities map[string]*model.Activity) (data []*model.Activity) {
+func CopyAll(activities map[string]*proto.Activity) (data []*proto.Activity) {
 	for _, v := range activities {
 		data = append(data, Copy(v))
 	}

@@ -1,7 +1,18 @@
+### LOGIN
+POST http://localhost:8081/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "sammi1",
+  "password": "sammi1"
+}
+
 ### CREATE ACTIVITY
 POST http://localhost:8081/activities
 Accept: application/json
 Content-Type: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDEyNjM2MzIsInVzZXJuYW1lIjoic2FtbWkxIiwicm9sZSI6ImFkbWluIn0.ZK87ApybEFjCvqIBQfccydNl6oYUWeriB_5xHtGi6q4
 
 {
   "email": "sammi@gmail.com",
@@ -13,6 +24,7 @@ Content-Type: application/json
 ### GET ACTIVITY BY ID
 GET http://localhost:8081/activities/7b5012e5-b28d-4875-9378-0b187b2c567f
 Accept: application/json
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDEyNjM2MzIsInVzZXJuYW1lIjoic2FtbWkxIiwicm9sZSI6ImFkbWluIn0.ZK87ApybEFjCvqIBQfccydNl6oYUWeriB_5xHtGi6q4
 
 ### SEARCH ACTIVITY BY FILTER
 GET http://localhost:8081/activities/search?day=SUNDAY

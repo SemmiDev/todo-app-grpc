@@ -1,28 +1,38 @@
-package handler
+package service
 
 import (
 	"context"
+	"github.com/SemmiDev/todo-app/model"
+	"github.com/SemmiDev/todo-app/proto"
 
 	"github.com/SemmiDev/todo-app/common/token"
-	"github.com/SemmiDev/todo-app/model"
 	"github.com/SemmiDev/todo-app/store/user"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-// AuthServer is the server for authentication
 type AuthServer struct {
-	model.UnimplementedAuthServiceServer
+	proto.UnimplementedAuthServiceServer
 	userStore  user.UserStore
 	jwtManager *token.JWTManager
 }
 
 func NewAuthServer(userStore user.UserStore, jwtManager *token.JWTManager) *AuthServer {
-	return &AuthServer{userStore: userStore, jwtManager: jwtManager}
+	authServer := &AuthServer{
+		userStore:  userStore,
+		jwtManager: jwtManager,
+	}
+
+	user1, _ := model.NewUser("sammi1", "sammi1", "admin")
+	user2, _ := model.NewUser("sammi2", "sammi2", "user")
+
+	authServer.userStore.Save(user1)
+	authServer.userStore.Save(user2)
+
+	return authServer
 }
 
-// Login is a unary RPC to login user
-func (server *AuthServer) Login(c context.Context, req *model.LoginRequest) (*model.LoginResponse, error) {
+func (server *AuthServer) Login(c context.Context, req *proto.LoginRequest) (*proto.LoginResponse, error) {
 	u, err := server.userStore.Get(req.GetUsername())
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "cannot find user: %v", err)
@@ -37,6 +47,6 @@ func (server *AuthServer) Login(c context.Context, req *model.LoginRequest) (*mo
 		return nil, status.Errorf(codes.Internal, "cannot generate access token")
 	}
 
-	res := &model.LoginResponse{AccessToken: token}
+	res := &proto.LoginResponse{AccessToken: token}
 	return res, nil
 }

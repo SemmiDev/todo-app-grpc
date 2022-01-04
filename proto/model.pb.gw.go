@@ -2,11 +2,11 @@
 // source: model.proto
 
 /*
-Package model is a reverse proxy.
+Package proto is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
-package model
+package proto
 
 import (
 	"context"
@@ -685,7 +685,7 @@ func RegisterAuthServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.AuthService/Login", runtime.WithHTTPPathPattern("/auth/login"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.AuthService/Login", runtime.WithHTTPPathPattern("/auth/login"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -717,7 +717,7 @@ func RegisterActivityServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.ActivityService/CreateActivity", runtime.WithHTTPPathPattern("/activities"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ActivityService/CreateActivity", runtime.WithHTTPPathPattern("/activities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -740,7 +740,7 @@ func RegisterActivityServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.ActivityService/GetActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ActivityService/GetActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -763,7 +763,7 @@ func RegisterActivityServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.ActivityService/ListActivity", runtime.WithHTTPPathPattern("/activities"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ActivityService/ListActivity", runtime.WithHTTPPathPattern("/activities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -793,7 +793,7 @@ func RegisterActivityServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.ActivityService/UpdateActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ActivityService/UpdateActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -816,7 +816,7 @@ func RegisterActivityServiceHandlerServer(ctx context.Context, mux *runtime.Serv
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.ActivityService/DeleteActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.ActivityService/DeleteActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -848,7 +848,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/CreateTodo", runtime.WithHTTPPathPattern("/todos"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/CreateTodo", runtime.WithHTTPPathPattern("/todos"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -871,7 +871,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/GetTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/GetTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -894,7 +894,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/ListTodo", runtime.WithHTTPPathPattern("/todos"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/ListTodo", runtime.WithHTTPPathPattern("/todos"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -917,7 +917,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/ListTodoByActivityId", runtime.WithHTTPPathPattern("/todos/activities/id/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/ListTodoByActivityId", runtime.WithHTTPPathPattern("/todos/activities/id/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -940,7 +940,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/ListTodoByActivityDate", runtime.WithHTTPPathPattern("/todos/activities/date/{date}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/ListTodoByActivityDate", runtime.WithHTTPPathPattern("/todos/activities/date/{date}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -970,7 +970,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/UpdateTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/UpdateTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -993,7 +993,7 @@ func RegisterTodoServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/model.TodoService/DeleteTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/proto.TodoService/DeleteTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1055,7 +1055,7 @@ func RegisterAuthServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.AuthService/Login", runtime.WithHTTPPathPattern("/auth/login"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.AuthService/Login", runtime.WithHTTPPathPattern("/auth/login"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1124,7 +1124,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/CreateActivity", runtime.WithHTTPPathPattern("/activities"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/CreateActivity", runtime.WithHTTPPathPattern("/activities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1144,7 +1144,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/GetActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/GetActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1164,7 +1164,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/ListActivity", runtime.WithHTTPPathPattern("/activities"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/ListActivity", runtime.WithHTTPPathPattern("/activities"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1184,7 +1184,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/SearchActivity", runtime.WithHTTPPathPattern("/activities/search"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/SearchActivity", runtime.WithHTTPPathPattern("/activities/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1204,7 +1204,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/UpdateActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/UpdateActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1224,7 +1224,7 @@ func RegisterActivityServiceHandlerClient(ctx context.Context, mux *runtime.Serv
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.ActivityService/DeleteActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.ActivityService/DeleteActivity", runtime.WithHTTPPathPattern("/activities/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1313,7 +1313,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/CreateTodo", runtime.WithHTTPPathPattern("/todos"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/CreateTodo", runtime.WithHTTPPathPattern("/todos"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1333,7 +1333,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/GetTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/GetTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1353,7 +1353,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/ListTodo", runtime.WithHTTPPathPattern("/todos"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/ListTodo", runtime.WithHTTPPathPattern("/todos"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1373,7 +1373,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/ListTodoByActivityId", runtime.WithHTTPPathPattern("/todos/activities/id/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/ListTodoByActivityId", runtime.WithHTTPPathPattern("/todos/activities/id/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1393,7 +1393,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/ListTodoByActivityDate", runtime.WithHTTPPathPattern("/todos/activities/date/{date}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/ListTodoByActivityDate", runtime.WithHTTPPathPattern("/todos/activities/date/{date}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1413,7 +1413,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/SearchTodo", runtime.WithHTTPPathPattern("/todos/search"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/SearchTodo", runtime.WithHTTPPathPattern("/todos/search"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1433,7 +1433,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/UpdateTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/UpdateTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1453,7 +1453,7 @@ func RegisterTodoServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/model.TodoService/DeleteTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/proto.TodoService/DeleteTodo", runtime.WithHTTPPathPattern("/todos/{id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

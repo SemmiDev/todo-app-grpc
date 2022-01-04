@@ -1,31 +1,56 @@
-package handler
+package service
 
 import (
 	"context"
 	"github.com/SemmiDev/todo-app/common/context"
+	"github.com/SemmiDev/todo-app/common/seeder"
+	"github.com/SemmiDev/todo-app/proto"
+	"github.com/SemmiDev/todo-app/store/activity"
+	"github.com/SemmiDev/todo-app/store/todo"
+	"github.com/rs/zerolog"
 	"log"
 
-	"github.com/SemmiDev/todo-app/model"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func (h *Handler) CreateTodo(
+type TodoServer struct {
+	proto.UnimplementedTodoServiceServer
+	todoStore     todo.TodoStore
+	activityStore activity.ActivityStore
+	logger        *zerolog.Logger
+}
+
+func NewTodoServer(todoStore todo.TodoStore, activityStore activity.ActivityStore, logger *zerolog.Logger) *TodoServer {
+	todoServer := &TodoServer{
+		todoStore:     todoStore,
+		activityStore: activityStore,
+		logger:        logger,
+	}
+
+	// seed todos
+	_, todos := seeder.Seed(100)
+	for i := 0; i < len(todos); i++ {
+		todoServer.todoStore.Save(todos[i])
+	}
+
+	todoServer.logger.Info().Interface("SEED TODO", len(todos)).Msg("[COMPLETED]")
+	return todoServer
+}
+
+func (h *TodoServer) CreateTodo(
 	c context.Context,
-	req *model.CreateTodoRequest,
-) (*model.CreateTodoResponse, error) {
+	req *proto.CreateTodoRequest,
+) (*proto.CreateTodoResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("create todo")
 
-	reqActivity := &model.GetActivityRequest{
-		Id: req.GetActivityId(),
-	}
-	if _, err := h.GetActivity(c, reqActivity); err != nil {
+	if _, err := h.activityStore.Get(req.ActivityId); err != nil {
 		return nil, status.Errorf(codes.NotFound, "activity with ID %s not found", req.GetActivityId())
 	}
 
-	todo := &model.Todo{
+	todo := &proto.Todo{
 		Id:          uuid.NewString(),
 		Title:       req.Title,
 		ActivityId:  req.ActivityId,
@@ -45,13 +70,13 @@ func (h *Handler) CreateTodo(
 		return nil, status.Errorf(codes.AlreadyExists, "todo with ID %s already exists", todo.GetId())
 	}
 
-	res := &model.CreateTodoResponse{
+	res := &proto.CreateTodoResponse{
 		Todo: todo,
 	}
 	return res, nil
 }
 
-func (h *Handler) GetTodo(c context.Context, req *model.GetTodoRequest) (*model.GetTodoResponse, error) {
+func (h *TodoServer) GetTodo(c context.Context, req *proto.GetTodoRequest) (*proto.GetTodoResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("get todo")
 	if err := ctx.ContextError(c); err != nil {
 		return nil, err
@@ -61,13 +86,13 @@ func (h *Handler) GetTodo(c context.Context, req *model.GetTodoRequest) (*model.
 	if err != nil {
 		return nil, status.Errorf(codes.NotFound, "todo with ID %s not found", req.GetId())
 	}
-	res := &model.GetTodoResponse{
+	res := &proto.GetTodoResponse{
 		Todo: todo,
 	}
 	return res, nil
 }
 
-func (h *Handler) ListTodo(c context.Context, req *model.EmptyRequest) (*model.ListTodoResponse, error) {
+func (h *TodoServer) ListTodo(c context.Context, req *proto.EmptyRequest) (*proto.ListTodoResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("list todo")
 	if err := ctx.ContextError(c); err != nil {
 		return nil, err
@@ -78,19 +103,19 @@ func (h *Handler) ListTodo(c context.Context, req *model.EmptyRequest) (*model.L
 		return nil, status.Errorf(codes.NotFound, "todos is empty")
 	}
 
-	res := &model.ListTodoResponse{
+	res := &proto.ListTodoResponse{
 		List: todos,
 	}
 	return res, nil
 }
 
-func (h *Handler) SearchTodo(filter *model.SearchTodoFilter, stream model.TodoService_SearchTodoServer) error {
+func (h *TodoServer) SearchTodo(filter *proto.SearchTodoFilter, stream proto.TodoService_SearchTodoServer) error {
 	h.logger.Info().Interface("filter", filter).Msg("search todo")
 	err := h.todoStore.Search(
 		stream.Context(),
 		filter,
-		func(todo *model.Todo) error {
-			res := &model.SearchTodoResponse{
+		func(todo *proto.Todo) error {
+			res := &proto.SearchTodoResponse{
 				Todo: todo,
 			}
 			err := stream.Send(res)
@@ -107,7 +132,7 @@ func (h *Handler) SearchTodo(filter *model.SearchTodoFilter, stream model.TodoSe
 	return nil
 }
 
-func (h *Handler) DeleteTodo(c context.Context, req *model.DeleteTodoRequest) (*model.EmptyResponse, error) {
+func (h *TodoServer) DeleteTodo(c context.Context, req *proto.DeleteTodoRequest) (*proto.EmptyResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("delete todo")
 	if err := ctx.ContextError(c); err != nil {
 		return nil, err
@@ -115,18 +140,18 @@ func (h *Handler) DeleteTodo(c context.Context, req *model.DeleteTodoRequest) (*
 
 	err := h.todoStore.Delete(req.Id)
 	if err != nil {
-		return &model.EmptyResponse{
+		return &proto.EmptyResponse{
 			Success: false,
 		}, status.Errorf(codes.NotFound, "todo with ID %s not found", req.GetId())
 	}
-	return &model.EmptyResponse{
+	return &proto.EmptyResponse{
 		Success: true,
 	}, nil
 }
 
-func (h *Handler) UpdateTodo(c context.Context, req *model.UpdateTodoRequest) (*model.UpdateTodoResponse, error) {
+func (h *TodoServer) UpdateTodo(c context.Context, req *proto.UpdateTodoRequest) (*proto.UpdateTodoResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("update todo")
-	todo := &model.Todo{
+	todo := &proto.Todo{
 		Id:          req.Id,
 		Title:       req.Title,
 		Description: req.Description,
@@ -143,16 +168,16 @@ func (h *Handler) UpdateTodo(c context.Context, req *model.UpdateTodoRequest) (*
 		return nil, status.Errorf(codes.NotFound, "todo with ID %s not found", req.GetId())
 	}
 
-	res := &model.UpdateTodoResponse{
+	res := &proto.UpdateTodoResponse{
 		Todo: todo,
 	}
 	return res, nil
 }
 
-func (h *Handler) ListTodoByActivityId(
+func (h *TodoServer) ListTodoByActivityId(
 	c context.Context,
-	req *model.ListTodoByActivityIdRequest,
-) (*model.ListTodoByActivityIdResponse, error) {
+	req *proto.ListTodoByActivityIdRequest,
+) (*proto.ListTodoByActivityIdResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("list todo by activity id")
 	if err := ctx.ContextError(c); err != nil {
 		return nil, err
@@ -163,16 +188,16 @@ func (h *Handler) ListTodoByActivityId(
 		return nil, status.Errorf(codes.NotFound, "todos is empty")
 	}
 
-	res := &model.ListTodoByActivityIdResponse{
+	res := &proto.ListTodoByActivityIdResponse{
 		Todos: todos,
 	}
 	return res, nil
 }
 
-func (h *Handler) ListTodoByActivityDate(
+func (h *TodoServer) ListTodoByActivityDate(
 	c context.Context,
-	req *model.ListTodoByActivityDateRequest,
-) (*model.ListTodoByActivityDateResponse, error) {
+	req *proto.ListTodoByActivityDateRequest,
+) (*proto.ListTodoByActivityDateResponse, error) {
 	h.logger.Info().Interface("req", req).Msg("list todo by activity date")
 	if err := ctx.ContextError(c); err != nil {
 		return nil, err
@@ -188,7 +213,7 @@ func (h *Handler) ListTodoByActivityDate(
 		return nil, status.Errorf(codes.NotFound, "todo with activities id %s is empty", ids)
 	}
 
-	res := &model.ListTodoByActivityDateResponse{
+	res := &proto.ListTodoByActivityDateResponse{
 		Todos: todos,
 	}
 	return res, nil

@@ -3,8 +3,7 @@ package todo
 import (
 	"context"
 	"errors"
-
-	"github.com/SemmiDev/todo-app/model"
+	"github.com/SemmiDev/todo-app/proto"
 )
 
 var (
@@ -14,18 +13,18 @@ var (
 )
 
 type TodoStore interface {
-	Save(todo *model.Todo) error
-	Get(id string) (*model.Todo, error)
-	List() ([]*model.Todo, error)
-	ListByActivityId(id string) ([]*model.Todo, error)
-	ListByActivityIds(id []string) ([]*model.Todo, error)
+	Save(todo *proto.Todo) error
+	Get(id string) (*proto.Todo, error)
+	List() ([]*proto.Todo, error)
+	ListByActivityId(id string) ([]*proto.Todo, error)
+	ListByActivityIds(id []string) ([]*proto.Todo, error)
 	Delete(id string) error
-	Update(todo *model.Todo) error
-	Search(c context.Context, filter *model.SearchTodoFilter, found func(todo *model.Todo) error) error
+	Update(todo *proto.Todo) error
+	Search(c context.Context, filter *proto.SearchTodoFilter, found func(todo *proto.Todo) error) error
 }
 
-func Copy(todo *model.Todo) *model.Todo {
-	return &model.Todo{
+func Copy(todo *proto.Todo) *proto.Todo {
+	return &proto.Todo{
 		Id:          todo.Id,
 		Title:       todo.Title,
 		ActivityId:  todo.ActivityId,
@@ -37,7 +36,7 @@ func Copy(todo *model.Todo) *model.Todo {
 	}
 }
 
-func CopyAll(todos map[string]*model.Todo) (data []*model.Todo) {
+func CopyAll(todos map[string]*proto.Todo) (data []*proto.Todo) {
 	for _, v := range todos {
 		data = append(data, Copy(v))
 	}

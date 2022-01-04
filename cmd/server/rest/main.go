@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"flag"
-	"log"
+	"github.com/SemmiDev/todo-app/proto"
+	"github.com/rs/zerolog"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/SemmiDev/todo-app/common/config"
 
-	"github.com/SemmiDev/todo-app/model"
 	"github.com/golang/glog"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -43,6 +44,9 @@ func CustomHTTPError(
 }
 
 func run() error {
+	w := zerolog.ConsoleWriter{Out: os.Stderr}
+	l := zerolog.New(w).With().Timestamp().Caller().Logger()
+
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -52,23 +56,23 @@ func run() error {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	}
 
-	err := model.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
+	err := proto.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, config.GRPCServerPort, opts)
 	if err != nil {
 		return err
 	}
 
-	err = model.RegisterTodoServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
+	err = proto.RegisterTodoServiceHandlerFromEndpoint(ctx, mux, config.GRPCServerPort, opts)
 	if err != nil {
 		return err
 	}
 
-	err = model.RegisterActivityServiceHandlerFromEndpoint(ctx, mux, config.ServerPort, opts)
+	err = proto.RegisterActivityServiceHandlerFromEndpoint(ctx, mux, config.GRPCServerPort, opts)
 	if err != nil {
 		return err
 	}
 
-	log.Println("starting gateway server on port 8081")
-	return http.ListenAndServe(config.GatewayPort, mux)
+	l.Info().Str("ADDR", config.RestServerPort).Msg("Start RESET Server")
+	return http.ListenAndServe(config.RestServerPort, mux)
 }
 
 func main() {

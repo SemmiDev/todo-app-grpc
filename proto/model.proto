@@ -1,21 +1,19 @@
 syntax = "proto3";
 
-package model;
+package proto;
 
-option go_package = "/model";
+option go_package = "/proto";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-// auth. 
+// auth.
 message LoginRequest {
     string username = 1;
     string password = 2;
 }
-
 message LoginResponse { string access_token = 1; }
-
 service AuthService {
     rpc Login(LoginRequest) returns (LoginResponse) {
         option (google.api.http) = {

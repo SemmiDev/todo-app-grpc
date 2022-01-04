@@ -29,7 +29,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelListActivityResponse"
+              "$ref": "#/definitions/protoListActivityResponse"
             }
           },
           "default": {
@@ -49,7 +49,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelCreateActivityResponse"
+              "$ref": "#/definitions/protoCreateActivityResponse"
             }
           },
           "default": {
@@ -65,7 +65,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/modelCreateActivityRequest"
+              "$ref": "#/definitions/protoCreateActivityRequest"
             }
           }
         ],
@@ -84,13 +84,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/modelSearchActivityResponse"
+                  "$ref": "#/definitions/protoSearchActivityResponse"
                 },
                 "error": {
                   "$ref": "#/definitions/googlerpcStatus"
                 }
               },
-              "title": "Stream result of modelSearchActivityResponse"
+              "title": "Stream result of protoSearchActivityResponse"
             }
           },
           "default": {
@@ -130,7 +130,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelGetActivityResponse"
+              "$ref": "#/definitions/protoGetActivityResponse"
             }
           },
           "default": {
@@ -158,7 +158,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelEmptyResponse"
+              "$ref": "#/definitions/protoEmptyResponse"
             }
           },
           "default": {
@@ -186,7 +186,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelUpdateActivityResponse"
+              "$ref": "#/definitions/protoUpdateActivityResponse"
             }
           },
           "default": {
@@ -220,7 +220,7 @@
                   "type": "string"
                 },
                 "day": {
-                  "$ref": "#/definitions/modelDay"
+                  "$ref": "#/definitions/protoDay"
                 }
               }
             }
@@ -238,7 +238,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelLoginResponse"
+              "$ref": "#/definitions/protoLoginResponse"
             }
           },
           "default": {
@@ -254,7 +254,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/modelLoginRequest"
+              "$ref": "#/definitions/protoLoginRequest"
             }
           }
         ],
@@ -270,7 +270,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelListTodoResponse"
+              "$ref": "#/definitions/protoListTodoResponse"
             }
           },
           "default": {
@@ -290,7 +290,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelCreateTodoResponse"
+              "$ref": "#/definitions/protoCreateTodoResponse"
             }
           },
           "default": {
@@ -306,7 +306,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/modelCreateTodoRequest"
+              "$ref": "#/definitions/protoCreateTodoRequest"
             }
           }
         ],
@@ -322,7 +322,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelListTodoByActivityDateResponse"
+              "$ref": "#/definitions/protoListTodoByActivityDateResponse"
             }
           },
           "default": {
@@ -352,7 +352,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelListTodoByActivityIdResponse"
+              "$ref": "#/definitions/protoListTodoByActivityIdResponse"
             }
           },
           "default": {
@@ -385,13 +385,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/modelSearchTodoResponse"
+                  "$ref": "#/definitions/protoSearchTodoResponse"
                 },
                 "error": {
                   "$ref": "#/definitions/googlerpcStatus"
                 }
               },
-              "title": "Stream result of modelSearchTodoResponse"
+              "title": "Stream result of protoSearchTodoResponse"
             }
           },
           "default": {
@@ -438,7 +438,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelGetTodoResponse"
+              "$ref": "#/definitions/protoGetTodoResponse"
             }
           },
           "default": {
@@ -466,7 +466,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelEmptyResponse"
+              "$ref": "#/definitions/protoEmptyResponse"
             }
           },
           "default": {
@@ -494,7 +494,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/modelUpdateTodoResponse"
+              "$ref": "#/definitions/protoUpdateTodoResponse"
             }
           },
           "default": {
@@ -528,10 +528,10 @@
                   "type": "string"
                 },
                 "priority": {
-                  "$ref": "#/definitions/modelPriority"
+                  "$ref": "#/definitions/protoPriority"
                 },
                 "status": {
-                  "$ref": "#/definitions/modelStatus"
+                  "$ref": "#/definitions/protoStatus"
                 }
               }
             }
@@ -562,7 +562,7 @@
         }
       }
     },
-    "modelActivity": {
+    "protoActivity": {
       "type": "object",
       "properties": {
         "id": {
@@ -578,7 +578,7 @@
           "type": "string"
         },
         "day": {
-          "$ref": "#/definitions/modelDay"
+          "$ref": "#/definitions/protoDay"
         },
         "createdAt": {
           "type": "string",
@@ -590,7 +590,7 @@
         }
       }
     },
-    "modelCreateActivityRequest": {
+    "protoCreateActivityRequest": {
       "type": "object",
       "properties": {
         "email": {
@@ -603,19 +603,19 @@
           "type": "string"
         },
         "day": {
-          "$ref": "#/definitions/modelDay"
+          "$ref": "#/definitions/protoDay"
         }
       }
     },
-    "modelCreateActivityResponse": {
+    "protoCreateActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {
-          "$ref": "#/definitions/modelActivity"
+          "$ref": "#/definitions/protoActivity"
         }
       }
     },
-    "modelCreateTodoRequest": {
+    "protoCreateTodoRequest": {
       "type": "object",
       "properties": {
         "title": {
@@ -628,22 +628,22 @@
           "type": "string"
         },
         "priority": {
-          "$ref": "#/definitions/modelPriority"
+          "$ref": "#/definitions/protoPriority"
         },
         "status": {
-          "$ref": "#/definitions/modelStatus"
+          "$ref": "#/definitions/protoStatus"
         }
       }
     },
-    "modelCreateTodoResponse": {
+    "protoCreateTodoResponse": {
       "type": "object",
       "properties": {
         "todo": {
-          "$ref": "#/definitions/modelTodo"
+          "$ref": "#/definitions/protoTodo"
         }
       }
     },
-    "modelDay": {
+    "protoDay": {
       "type": "string",
       "enum": [
         "MONDAY",
@@ -657,7 +657,7 @@
       "default": "MONDAY",
       "description": "activity is a model."
     },
-    "modelEmptyResponse": {
+    "protoEmptyResponse": {
       "type": "object",
       "properties": {
         "success": {
@@ -665,67 +665,67 @@
         }
       }
     },
-    "modelGetActivityResponse": {
+    "protoGetActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {
-          "$ref": "#/definitions/modelActivity"
+          "$ref": "#/definitions/protoActivity"
         }
       }
     },
-    "modelGetTodoResponse": {
+    "protoGetTodoResponse": {
       "type": "object",
       "properties": {
         "todo": {
-          "$ref": "#/definitions/modelTodo"
+          "$ref": "#/definitions/protoTodo"
         }
       }
     },
-    "modelListActivityResponse": {
+    "protoListActivityResponse": {
       "type": "object",
       "properties": {
         "activities": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/modelActivity"
+            "$ref": "#/definitions/protoActivity"
           }
         }
       }
     },
-    "modelListTodoByActivityDateResponse": {
+    "protoListTodoByActivityDateResponse": {
       "type": "object",
       "properties": {
         "todos": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/modelTodo"
+            "$ref": "#/definitions/protoTodo"
           }
         }
       }
     },
-    "modelListTodoByActivityIdResponse": {
+    "protoListTodoByActivityIdResponse": {
       "type": "object",
       "properties": {
         "todos": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/modelTodo"
+            "$ref": "#/definitions/protoTodo"
           }
         }
       }
     },
-    "modelListTodoResponse": {
+    "protoListTodoResponse": {
       "type": "object",
       "properties": {
         "list": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/modelTodo"
+            "$ref": "#/definitions/protoTodo"
           }
         }
       }
     },
-    "modelLoginRequest": {
+    "protoLoginRequest": {
       "type": "object",
       "properties": {
         "username": {
@@ -737,7 +737,7 @@
       },
       "description": "auth."
     },
-    "modelLoginResponse": {
+    "protoLoginResponse": {
       "type": "object",
       "properties": {
         "accessToken": {
@@ -745,7 +745,7 @@
         }
       }
     },
-    "modelPriority": {
+    "protoPriority": {
       "type": "string",
       "enum": [
         "LOW",
@@ -754,23 +754,23 @@
       ],
       "default": "LOW"
     },
-    "modelSearchActivityResponse": {
+    "protoSearchActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {
-          "$ref": "#/definitions/modelActivity"
+          "$ref": "#/definitions/protoActivity"
         }
       }
     },
-    "modelSearchTodoResponse": {
+    "protoSearchTodoResponse": {
       "type": "object",
       "properties": {
         "todo": {
-          "$ref": "#/definitions/modelTodo"
+          "$ref": "#/definitions/protoTodo"
         }
       }
     },
-    "modelStatus": {
+    "protoStatus": {
       "type": "string",
       "enum": [
         "IN_PROGRESS",
@@ -779,7 +779,7 @@
       "default": "IN_PROGRESS",
       "description": "todo is a model."
     },
-    "modelTodo": {
+    "protoTodo": {
       "type": "object",
       "properties": {
         "id": {
@@ -795,10 +795,10 @@
           "type": "string"
         },
         "priority": {
-          "$ref": "#/definitions/modelPriority"
+          "$ref": "#/definitions/protoPriority"
         },
         "status": {
-          "$ref": "#/definitions/modelStatus"
+          "$ref": "#/definitions/protoStatus"
         },
         "createdAt": {
           "type": "string",
@@ -810,19 +810,19 @@
         }
       }
     },
-    "modelUpdateActivityResponse": {
+    "protoUpdateActivityResponse": {
       "type": "object",
       "properties": {
         "activity": {
-          "$ref": "#/definitions/modelActivity"
+          "$ref": "#/definitions/protoActivity"
         }
       }
     },
-    "modelUpdateTodoResponse": {
+    "protoUpdateTodoResponse": {
       "type": "object",
       "properties": {
         "todo": {
-          "$ref": "#/definitions/modelTodo"
+          "$ref": "#/definitions/protoTodo"
         }
       }
     },

@@ -7,10 +7,12 @@ gen:
 	--openapiv2_out=:swagger \
 	--go-grpc_opt=paths=source_relative \
 	model.proto && \
-	mv model.pb.go model_grpc.pb.go model/model.pb.gw.go ../model && \
-	rm -r model && cd ..
+	cd proto && \
+	mv model.pb.gw.go .. && \
+	cd .. && \
+	rmdir proto
 
-run-server:
-	go run server/server.go
-run-gateway:
-	go run gateway/gateway.go
+run-GRPC-server:
+	go run cmd/server/grpc/main.go
+run-REST-server:
+	go run cmd/server/rest/main.go

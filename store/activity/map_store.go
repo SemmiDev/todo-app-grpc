@@ -2,25 +2,24 @@ package activity
 
 import (
 	"context"
+	"github.com/SemmiDev/todo-app/proto"
 	"log"
 	"sync"
-
-	"github.com/SemmiDev/todo-app/model"
 )
 
 type MapStore struct {
 	m          sync.RWMutex
-	activities map[string]*model.Activity
+	activities map[string]*proto.Activity
 }
 
 func NewMapStore() *MapStore {
 	return &MapStore{
 		m:          sync.RWMutex{},
-		activities: make(map[string]*model.Activity),
+		activities: make(map[string]*proto.Activity),
 	}
 }
 
-func (s *MapStore) Save(todo *model.Activity) error {
+func (s *MapStore) Save(todo *proto.Activity) error {
 	s.m.Lock()
 	defer s.m.Unlock()
 
@@ -31,7 +30,7 @@ func (s *MapStore) Save(todo *model.Activity) error {
 	return ErrActivityAlreadyExists
 }
 
-func (s *MapStore) Get(id string) (*model.Activity, error) {
+func (s *MapStore) Get(id string) (*proto.Activity, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -59,7 +58,7 @@ func (s *MapStore) GetIdByDate(date string) ([]string, error) {
 	return ids, nil
 }
 
-func (s *MapStore) List() ([]*model.Activity, error) {
+func (s *MapStore) List() ([]*proto.Activity, error) {
 	s.m.RLock()
 	defer s.m.RUnlock()
 
@@ -80,7 +79,7 @@ func (s *MapStore) Delete(id string) error {
 	return nil
 }
 
-func (s *MapStore) Update(todo *model.Activity) error {
+func (s *MapStore) Update(todo *proto.Activity) error {
 	s.m.Lock()
 	defer s.m.Unlock()
 
@@ -95,8 +94,8 @@ func (s *MapStore) Update(todo *model.Activity) error {
 
 func (s *MapStore) Search(
 	c context.Context,
-	filter *model.SearchActivityFilter,
-	found func(todo *model.Activity) error,
+	filter *proto.SearchActivityFilter,
+	found func(todo *proto.Activity) error,
 ) error {
 	s.m.RLock()
 	defer s.m.RUnlock()
@@ -117,6 +116,6 @@ func (s *MapStore) Search(
 	return nil
 }
 
-func isQualified(filter *model.SearchActivityFilter, todo *model.Activity) bool {
+func isQualified(filter *proto.SearchActivityFilter, todo *proto.Activity) bool {
 	return todo.GetDay() == filter.GetDay()
 }
