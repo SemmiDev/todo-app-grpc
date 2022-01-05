@@ -15,4 +15,6 @@ var (
 type UserStore interface {
 	Save(user *model.User) error
 	Get(username string) (*model.User, error)
+	ExistsByEmail(email string) bool
+	ExistsByUsername(username string) bool
 }

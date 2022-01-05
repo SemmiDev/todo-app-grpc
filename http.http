@@ -1,11 +1,22 @@
+### REGISTER
+POST http://localhost:8081/auth/register
+Accept: application/x-protobuf
+Content-Type: application/x-protobuf
+
+{
+  "username": "sammi123",
+  "email": "sammi123@gmail.com",
+  "password": "sammi123"
+}
+
 ### LOGIN
 POST http://localhost:8081/auth/login
 Accept: application/json
 Content-Type: application/json
 
 {
-  "username": "sammi1",
-  "password": "sammi1"
+  "username": "sammi123",
+  "password": "sammi123"
 }
 
 ### CREATE ACTIVITY

@@ -35,8 +35,28 @@ func (store *MapStore) Get(username string) (*model.User, error) {
 
 	user := store.users[username]
 	if user == nil {
-		return nil, nil
+		return nil, ErrUserNotFound
 	}
 
 	return user.Clone(), nil
+}
+
+func (store *MapStore) ExistsByEmail(email string) bool {
+	store.mutex.RLock()
+	defer store.mutex.RUnlock()
+
+	for _, v := range store.users {
+		if v.Email == email {
+			return true
+		}
+	}
+	return false
+}
+
+func (store *MapStore) ExistsByUsername(username string) bool {
+	store.mutex.RLock()
+	defer store.mutex.RUnlock()
+
+	_, ok := store.users[username]
+	return ok
 }

@@ -6,15 +6,28 @@ option go_package = "/proto";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "google/api/httpbody.proto";
 import "google/api/annotations.proto";
 
 // auth.
+message RegisterRequest {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+}
+
 message LoginRequest {
     string username = 1;
     string password = 2;
 }
 message LoginResponse { string access_token = 1; }
 service AuthService {
+    rpc Register(RegisterRequest) returns (google.api.HttpBody) {
+        option (google.api.http) = {
+            post: "/auth/register"
+            body: "*"
+        };
+    };
     rpc Login(LoginRequest) returns (LoginResponse) {
         option (google.api.http) = {
             post: "/auth/login"

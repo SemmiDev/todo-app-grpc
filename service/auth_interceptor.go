@@ -56,10 +56,18 @@ func (interceptor *AuthInterceptor) Stream() grpc.StreamServerInterceptor {
 	}
 }
 
+var skipAuthorization = map[string]bool{
+	"/proto.AuthService/Register": true,
+}
+
 func (interceptor *AuthInterceptor) authorize(c context.Context, method string) error {
+	// not require authorization
+	if _, ok := skipAuthorization[method]; ok {
+		return nil
+	}
+
 	accessibleRoles, ok := interceptor.accessibleRoles[method]
 	if !ok {
-		// semua orang bisa akses
 		return nil
 	}
 
